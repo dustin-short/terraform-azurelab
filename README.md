@@ -134,7 +134,7 @@ This will:
 │   ├── main.tf
 │   └── outputs.tf
 │
-└── tf-azure-main/
+└── tf-lab/
     ├── providers.tf
     ├── backend.hcl   (optional)
     ├── main.tf
@@ -160,16 +160,3 @@ terraform destroy
 ```
 
 ---
-
-## Next Steps
-
-I can also generate:
-
-- A full reusable Terraform module layout  
-- A storage account module using Azure Verified Modules  
-- An Azure landing zone starter (VNet, NSG, VM, Key Vault)  
-- A Linux Mint auto-bootstrap script (Terraform + Azure CLI + Ansible)  
-- A diagram showing Bootstrap → Backend → Main
-
-Just ask: **“Generate the full module layout”** or **“Give me the landing zone starter.”**
-```
