@@ -155,7 +155,8 @@ terraform destroy
 To destroy main deployment resources:
 
 ```bash
-cd tf-azure-main
+cd tf-lab
+
 terraform destroy
 ```
 
