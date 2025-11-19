@@ -41,21 +41,3 @@ resource "azurerm_storage_container" "tfstate_container" {
   storage_account_id   = azurerm_storage_account.tfstate_sa.id
   container_access_type = "private"
 }
-
-# Useful outputs for the main config
-output "tfstate_resource_group_name" {
-  value = azurerm_resource_group.tfstate_rg.name
-}
-
-output "tfstate_storage_account_name" {
-  value = azurerm_storage_account.tfstate_sa.name
-}
-
-output "tfstate_container_name" {
-  value = azurerm_storage_container.tfstate_container.name
-}
-
-output "tfstate_key_example" {
-  value = "global-dev.tfstate"
-}
-

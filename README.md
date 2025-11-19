@@ -98,6 +98,28 @@ Save the outputs — you will need them for the main deployment backend configur
 
 ### 4. Main Terraform Deployment (Using Remote State)
 
+Generate backend-lab.hcl with bootstrap outputs:
+
+```bash
+cd ~/terraform-azurelab
+
+# Read outputs from the bootstrap state
+rg_name=$(terraform -chdir=tf-azure-bootstrap output -raw tfstate_resource_group_name)
+sa_name=$(terraform -chdir=tf-azure-bootstrap output -raw tfstate_storage_account_name)
+container_name=$(terraform -chdir=tf-azure-bootstrap output -raw tfstate_container_name)
+
+# Write backend config for tf-lab
+cat > tf-lab/backend-lab.hcl <<EOF
+resource_group_name  = "$rg_name"
+storage_account_name = "$sa_name"
+container_name       = "$container_name"
+key                  = "lab.tfstate"
+use_azuread_auth     = true
+EOF
+
+echo "Wrote tf-lab/backend-lab.hcl"
+```
+
 Navigate to your main Terraform project:
 
 ```bash
