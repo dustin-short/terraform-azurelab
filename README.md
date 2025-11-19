@@ -1,7 +1,6 @@
 # terraform-azurelab
 
-```markdown
-# Azure Terraform Deployment — Bootstrap + Main Infrastructure
+## Azure Terraform Deployment — Bootstrap + Main Infrastructure
 
 This project uses Terraform to deploy Azure resources using **remote state stored in Azure Storage**. The setup is split into two stages:
 
@@ -12,7 +11,7 @@ This README covers everything needed to initialize, authenticate, and run both s
 
 ---
 
-## Requirements
+### Requirements
 
 - Linux Mint / Ubuntu
 - Azure CLI
@@ -21,7 +20,7 @@ This README covers everything needed to initialize, authenticate, and run both s
 
 ---
 
-## 1. Authenticate to Azure
+### 1. Authenticate to Azure
 
 Log in using the Azure CLI:
 
@@ -44,7 +43,7 @@ az account show --output table
 
 ---
 
-## 2. Set the Azure Subscription ID as an Environment Variable
+### 2. Set the Azure Subscription ID as an Environment Variable
 
 Terraform uses environment variables for Azure authentication.
 
@@ -65,7 +64,7 @@ echo $ARM_SUBSCRIPTION_ID
 
 ---
 
-## 3. Bootstrap Terraform Remote State
+### 3. Bootstrap Terraform Remote State
 
 The bootstrap deployment sets up the Azure Storage backend used for Terraform state.
 
@@ -97,7 +96,7 @@ Save the outputs — you will need them for the main deployment backend configur
 
 ---
 
-## 4. Main Terraform Deployment (Using Remote State)
+### 4. Main Terraform Deployment (Using Remote State)
 
 Navigate to your main Terraform project:
 
@@ -125,25 +124,40 @@ This will:
 
 ---
 
-## Project Structure
+### Project Structure
 
 ```
-.
-├── tf-azure-bootstrap/
-│   ├── providers.tf
-│   ├── main.tf
-│   └── outputs.tf
+terraform-azurelab/
+├── .gitignore
+├── README.md
 │
-└── tf-lab/
-    ├── providers.tf
-    ├── backend.hcl   (optional)
-    ├── main.tf
-    └── variables.tf
+├── tf-azure-bootstrap/          # Remote state backend deployment
+│   ├── main.tf                  # rg-tfstate-dev, storage account, container
+│   ├── providers.tf
+│   ├── outputs.tf
+│   └── terraform.tfstate        # Remote or local (not committed)
+│
+└── tf-lab/                      # Your actual lab environment (Phase 1)
+    ├── main.tf                  # Calls modules for RG, VNet, Subnets, VM later
+    ├── providers.tf             # AzureRM provider + backend block
+    ├── backend-lab.hcl          # Backend config (gitignored)
+    │
+    └── modules/
+        ├── network/             # Network module (RG + VNet + Subnets)
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        │
+        └── vm_cloudflare/ (future)
+            ├── main.tf          # Cloudflare VM
+            ├── variables.tf
+            └── outputs.tf
+
 ```
 
 ---
 
-## Cleanup
+### Cleanup
 
 To destroy bootstrap resources:
 
